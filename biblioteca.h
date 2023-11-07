@@ -26,3 +26,9 @@ void escrita(EscritaTarefas *, int );
 int leitura(EscritaTarefas *);
 
 void editartarefa(EscritaTarefas * ,int);
+
+void filtrarprioridade(EscritaTarefas *, int);
+
+void filtrarcategoria(EscritaTarefas *, int);
+
+void filtrarprioridadecategoria(EscritaTarefas *, int);
