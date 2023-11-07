@@ -18,7 +18,11 @@ int main() {
            "0) Sair do programa;\n"
            "1) Criar tarefa;\n"
            "2) Listar tarefa;\n"
-           "3) Deletar tarefa.\n");
+           "3) Deletar tarefa;\n"
+           "4) Editar tarefa;\n"
+           "5) Filtrar por prioridade;\n"
+           "6) Filtrar por categoria;\n"
+           "7) Filtrar por prioridade e categoria;\n");
     printf("Sua escolha eh: ");
     scanf("%d", &tarefa);
     valortarefa = leitura(TodasTarefas); //Le o arquivo binario e aplica o valor no valortarefa
@@ -47,11 +51,21 @@ int main() {
         while (getchar() != '\n' && getchar() != EOF); //Clear buffer para evitar overflow para as entradas (scanf)
     }else if(tarefa == 4){
         int entrada2;
+        int c;
+        while ((c = getchar())!= '\n' && c != EOF);
         printf("digite o valor da tarefa desejada");
-        while (getchar()!= '\n' && getchar() != EOF);
-        scanf("&d", &entrada2);
+        scanf("%d", &entrada2);
         entrada2--;
         editartarefa(&TodasTarefas, entrada2);
+    }else if(tarefa == 5){
+        printf("\n");
+        filtrarprioridade(&TodasTarefas, valortarefa); //Leva para a funcao filtrar prioridade
+    }else if(tarefa == 6){
+        printf("\n");
+        filtrarcategoria(&TodasTarefas, valortarefa);//Leva para a funcao filtrarcategoria
+    }else if(tarefa == 7){
+        printf("\n");
+        filtrarprioridadecategoria(&TodasTarefas, valortarefa);//Leva para a funcao filtrar prioridade e categoria
     }
     else if(tarefa == 0){ //Escolha 0
         printf("FIM!"); //Finaliza o programa

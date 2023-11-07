@@ -1,5 +1,6 @@
 #include "biblioteca.h"
 #include <stdio.h>
+#include <string.h>
 
 void criarTarefa(EscritaTarefas *tarefas){
     int prioridade = 0; //inicializacao da variavel prioridade para comparar com o loop de verificacao
@@ -17,7 +18,9 @@ void criarTarefa(EscritaTarefas *tarefas){
         printf("Em qual categoria ela se encaixa? \nR: ");
         scanf("%s",&tarefas->categoria); //define o valor da categoria na struct
         printf("Descreva sua tarefa: \nR: ");
-        scanf("%s",&tarefas->descricao); //define o valor da descricao na struct
+        int c;
+        while ((c = getchar())!= '\n' && c != EOF);
+        scanf("%[^\n]s",&tarefas->descricao); //define o valor da descricao na struct
         break; //finaliza a funcao
     }
 }
@@ -61,7 +64,7 @@ void editartarefa(EscritaTarefas * tarefas ,int valortarefa){
         if (decisaoprioridade == 's' || decisaoprioridade == 'S') {
             while (getchar()!= '\n' && getchar() != EOF);
             printf("digite a nova prioridade da tarefa.\n");
-            scanf("%d",tarefas[valortarefa].prioridade);
+            scanf("%d",&tarefas[valortarefa].prioridade);
             break;
         } else if (decisaoprioridade == 'n' || decisaoprioridade == 'N') {
             break;
@@ -75,9 +78,10 @@ void editartarefa(EscritaTarefas * tarefas ,int valortarefa){
         printf("deseja alterar a descricao da tarefa? s/n\n");
         scanf("%c",&decisaodescricao);
         if(decisaodescricao == 's' || decisaodescricao == 'S'){
-            while (getchar()!= '\n' && getchar() != EOF);
+            int c;
+            while ((c = getchar())!= '\n' && c != EOF);
             printf("digite a nova descricao\n");
-            scanf("%s", tarefas[valortarefa].descricao);
+            scanf("%[^\n]s", tarefas[valortarefa].descricao);
             break;
         }else if(decisaodescricao == 'n'|| decisaodescricao == 'N'){
             break;
@@ -105,6 +109,67 @@ void editartarefa(EscritaTarefas * tarefas ,int valortarefa){
 
 
     }
+
+void filtrarprioridade(EscritaTarefas *tarefas, int valortarefa){
+    int i = -1;//inicializa o valor de i como -1 para que a primeira execucao se torne 0 e nao comprometa o resto da funcao
+    int filtro;
+    printf("digite qual o numero da prioridade para filtrar tarefas");
+    scanf("%d", &filtro);
+    do{ //inicio do loop
+        i++; // incremento da variavel i (vira 0)
+        if(tarefas[i].prioridade < 0){ // se o valor for removido na funcao deletarTarefa, ele se torna 0 e essa a linha o ignora na listagem
+            continue;
+        }else if(tarefas[i].prioridade == filtro){ //caso contrario, ele lista todas as tarefas do programa
+            printf("Tarefa %d:\n",i+1);
+            printf("Prioridade: %d\n",tarefas[i].prioridade);
+            printf("Categoria: %s\n",tarefas[i].categoria);
+            printf("Descricao: %s\n",tarefas[i].descricao);
+            printf("\n");
+
+        }
+    } while (i<valortarefa);
+}
+void filtrarcategoria(EscritaTarefas *tarefas, int valortarefa){
+    int i = -1;//inicializa o valor de i como -1 para que a primeira execucao se torne 0 e nao comprometa o resto da funcao
+    char filtro[100];
+    printf("digite qual a categoria para filtrar tarefas");
+    scanf("%s", filtro);
+    do{ //inicio do loop
+        i++; // incremento da variavel i (vira 0)
+        if(tarefas[i].prioridade < 0){ // se o valor for removido na funcao deletarTarefa, ele se torna 0 e essa a linha o ignora na listagem
+            continue;
+        }else if(strcmp(tarefas[i].categoria,filtro) == 0){ //caso contrario, ele lista todas as tarefas do programa
+            printf("Tarefa %d:\n",i+1);
+            printf("Prioridade: %d\n",tarefas[i].prioridade);
+            printf("Categoria: %s\n",tarefas[i].categoria);
+            printf("Descricao: %s\n",tarefas[i].descricao);
+            printf("\n");
+
+        }
+    } while (i<valortarefa);
+}
+void filtrarprioridadecategoria(EscritaTarefas *tarefas, int valortarefa){
+    int i = -1;//inicializa o valor de i como -1 para que a primeira execucao se torne 0 e nao comprometa o resto da funcao
+    int filtro1;
+    char filtro2[100];
+    printf("digite qual o numero da prioridade para filtrar tarefas");
+    scanf("%d", &filtro1);
+    printf("digite qual a categoria para filtrar as tarefas");
+    scanf("%s", filtro2);
+    do{ //inicio do loop
+        i++; // incremento da variavel i (vira 0)
+        if(tarefas[i].prioridade < 0){ // se o valor for removido na funcao deletarTarefa, ele se torna 0 e essa a linha o ignora na listagem
+            continue;
+        }else if(tarefas[i].prioridade == filtro1 && strcmp(tarefas[i].categoria,filtro2) == 0){ //caso contrario, ele lista todas as tarefas do programa
+            printf("Tarefa %d:\n",i+1);
+            printf("Prioridade: %d\n",tarefas[i].prioridade);
+            printf("Categoria: %s\n",tarefas[i].categoria);
+            printf("Descricao: %s\n",tarefas[i].descricao);
+            printf("\n");
+
+        }
+    } while (i<valortarefa);
+}
 
 
 void escrita(EscritaTarefas *tarefas, int valortarefa){
