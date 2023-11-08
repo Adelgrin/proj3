@@ -39,3 +39,5 @@ void filtrarestado(EscritaTarefas *, int);
 void exportarprioridade(EscritaTarefas *, int);
 
 void exportarcategoria(EscritaTarefas *, int);
+
+void exportarprioridadecategoria(EscritaTarefas *, int);

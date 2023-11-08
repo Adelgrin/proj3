@@ -79,6 +79,9 @@ int main() {
     }else if(tarefa == 10){
         printf("\n");
         exportarcategoria(&TodasTarefas, valortarefa);
+    }else if(tarefa == 11){
+        printf("\n");
+        exportarprioridadecategoria(&TodasTarefas, valortarefa);
     }
     else if(tarefa == 0){ //Escolha 0
         printf("FIM!"); //Finaliza o programa
