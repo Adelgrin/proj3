@@ -12,6 +12,7 @@ typedef struct {
     int prioridade;
     char descricao[300];
     char categoria[100];
+    char estado[13];
 }EscritaTarefas;
 
 //inicializacao das funcoes usadas no programa
@@ -32,3 +33,9 @@ void filtrarprioridade(EscritaTarefas *, int);
 void filtrarcategoria(EscritaTarefas *, int);
 
 void filtrarprioridadecategoria(EscritaTarefas *, int);
+
+void filtrarestado(EscritaTarefas *, int);
+
+void exportarprioridade(EscritaTarefas *, int);
+
+void exportarcategoria(EscritaTarefas *, int);

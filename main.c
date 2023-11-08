@@ -22,7 +22,11 @@ int main() {
            "4) Editar tarefa;\n"
            "5) Filtrar por prioridade;\n"
            "6) Filtrar por categoria;\n"
-           "7) Filtrar por prioridade e categoria;\n");
+           "7) Filtrar por prioridade e categoria;\n"
+           "8) Filtrar por estado;\n"
+           "9) Exportar por prioridade;\n"
+           "10) Exportar por categoria;\n"
+           "11) Exportar por prioridade e categoria;\n");
     printf("Sua escolha eh: ");
     scanf("%d", &tarefa);
     valortarefa = leitura(TodasTarefas); //Le o arquivo binario e aplica o valor no valortarefa
@@ -66,6 +70,15 @@ int main() {
     }else if(tarefa == 7){
         printf("\n");
         filtrarprioridadecategoria(&TodasTarefas, valortarefa);//Leva para a funcao filtrar prioridade e categoria
+    }else if(tarefa == 8){
+        printf("\n");
+        filtrarestado(&TodasTarefas, valortarefa);//Leva para a funcao filtrarestado
+    }else if(tarefa == 9){
+        printf("\n");
+        exportarprioridade(&TodasTarefas, valortarefa);
+    }else if(tarefa == 10){
+        printf("\n");
+        exportarcategoria(&TodasTarefas, valortarefa);
     }
     else if(tarefa == 0){ //Escolha 0
         printf("FIM!"); //Finaliza o programa
