@@ -20,7 +20,21 @@ void criarTarefa(EscritaTarefas *tarefas){
         printf("Descreva sua tarefa: \nR: ");
         int c;
         while ((c = getchar())!= '\n' && c != EOF);
-        scanf("%[^\n]s",&tarefas->descricao); //define o valor da descricao na struct
+        scanf("%[^\n]s",tarefas->descricao); //define o valor da descricao na struct
+        int estado;
+        while ((c = getchar()) != '\n' && c != EOF);
+        printf("digite o valor do estado dessa tarefa;\n"
+               "1) completa;\n"
+               "2) em andamendo;\n"
+               "3) nao iniciado;\n");
+        scanf("%d", &estado);
+        if(estado == 1){
+            strcpy(tarefas->estado,"Completo");
+        }else if(estado == 2){
+            strcpy(tarefas->estado,"Em andamento");
+        }else if(estado == 3){
+            strcpy(tarefas->estado,"Nao iniciado");
+        }
         break; //finaliza a funcao
     }
 }
@@ -35,6 +49,7 @@ void listarTarefa(EscritaTarefas *tarefas, int valortarefa){
         printf("Prioridade: %d\n",tarefas[i].prioridade);
         printf("Categoria: %s\n",tarefas[i].categoria);
         printf("Descricao: %s\n",tarefas[i].descricao);
+        printf("Estado: %s\n", tarefas[i].estado);
         printf("\n");
 
         }
@@ -49,6 +64,10 @@ void deletarTarefa(EscritaTarefas *tarefas, int tarefaremover){
     }
     for (int j = 0; j < 100; ++j) {
         tarefas[remover].categoria[j] = '\0';//define todos os caracteres da categoria como nulo
+    }
+    for (int k = 0; k < 13; ++k) {
+        tarefas[remover].estado[k] = '\0';
+
     }
 }
 
@@ -106,6 +125,33 @@ void editartarefa(EscritaTarefas * tarefas ,int valortarefa){
             continue;
         }
     }
+    while (1){
+        while (getchar()!= '\n' && getchar() != EOF);
+        printf("deseja alterar o estado da tarefa? s/n\n");
+        scanf("%c",&decisaocategoria);
+        if(decisaocategoria == 's' || decisaocategoria == 'S'){
+            while (getchar()!= '\n' && getchar() != EOF);
+            int estado;
+            printf("digite o valor referente ao estado da tarefa\n"
+                   "1) Completo;\n"
+                   "2) Em andamento;\n"
+                   "3) Nao iniciado;");
+            scanf("%d", &estado);
+            if(estado == 1){
+                strcpy(tarefas->estado,"Completo");
+            }else if(estado == 2){
+                strcpy(tarefas->estado,"Em andamento");
+            }else if(estado == 3){
+                strcpy(tarefas->estado,"Nao iniciado");
+            }
+            break;
+        }else if(decisaocategoria == 'n'|| decisaocategoria == 'N'){
+            break;
+        }else{
+            printf("valor incorreto\n");
+            continue;
+        }
+    }
 
 
     }
@@ -124,6 +170,7 @@ void filtrarprioridade(EscritaTarefas *tarefas, int valortarefa){
             printf("Prioridade: %d\n",tarefas[i].prioridade);
             printf("Categoria: %s\n",tarefas[i].categoria);
             printf("Descricao: %s\n",tarefas[i].descricao);
+            printf("Estado: %s\n",tarefas[i].estado);
             printf("\n");
 
         }
@@ -143,6 +190,7 @@ void filtrarcategoria(EscritaTarefas *tarefas, int valortarefa){
             printf("Prioridade: %d\n",tarefas[i].prioridade);
             printf("Categoria: %s\n",tarefas[i].categoria);
             printf("Descricao: %s\n",tarefas[i].descricao);
+            printf("Estado: %s\n",tarefas[i].estado);
             printf("\n");
 
         }
@@ -165,11 +213,116 @@ void filtrarprioridadecategoria(EscritaTarefas *tarefas, int valortarefa){
             printf("Prioridade: %d\n",tarefas[i].prioridade);
             printf("Categoria: %s\n",tarefas[i].categoria);
             printf("Descricao: %s\n",tarefas[i].descricao);
+            printf("Estado: %s\n",tarefas[i].estado);
             printf("\n");
 
         }
     } while (i<valortarefa);
 }
+void filtrarestado(EscritaTarefas *tarefas, int valortarefa){
+    int i = -1;//inicializa o valor de i como -1 para que a primeira execucao se torne 0 e nao comprometa o resto da funcao
+    int filtro1;
+    char filtro[13];
+    printf("digite o numero referente ao estado para filtrar tarefas");
+    scanf("%d", &filtro1);
+    if(filtro1 == 1){
+        strcpy(filtro, "Completo");
+    }else if(filtro1 == 2){
+        strcpy(filtro, "Em andamento");
+    }else if(filtro1 == 3){
+        strcpy(filtro, "Nao iniciado");
+    }
+    do{ //inicio do loop
+        i++; // incremento da variavel i (vira 0)
+        if(tarefas[i].prioridade < 0){ // se o valor for removido na funcao deletarTarefa, ele se torna 0 e essa a linha o ignora na listagem
+            continue;
+        }else if(strcmp(tarefas[i].estado,filtro) == 0){ //caso contrario, ele lista todas as tarefas do programa
+            printf("Tarefa %d:\n",i+1);
+            printf("Prioridade: %d\n",tarefas[i].prioridade);
+            printf("Categoria: %s\n",tarefas[i].categoria);
+            printf("Descricao: %s\n",tarefas[i].descricao);
+            printf("Estado: %s\n",tarefas[i].estado);
+            printf("\n");
+
+        }
+    } while (i<valortarefa);
+}
+void exportarprioridade(EscritaTarefas *tarefas, int valortarefa){
+    FILE *f = fopen("tarefas_prioridade.txt","w");
+    int i = -1;//inicializa o valor de i como -1 para que a primeira execucao se torne 0 e nao comprometa o resto da funcao
+    int filtro;
+    printf("digite qual o numero da prioridade para filtrar tarefas");
+    scanf("%d", &filtro);
+    do{ //inicio do loop
+        i++; // incremento da variavel i (vira 0)
+        //printf("%d", tarefas[i].prioridade);
+        //printf("%d", filtro);
+        if(tarefas[i].prioridade < 0){ // se o valor for removido na funcao deletarTarefa, ele se torna 0 e essa a linha o ignora na listagem
+            continue;
+        }else if(tarefas[i].prioridade == filtro){ //caso contrario, ele lista todas as tarefas do programa
+            fprintf(f,"Tarefa %d:\n",i+1);
+            fprintf(f,"Prioridade: %d\n",tarefas[i].prioridade);
+            fprintf(f,"Categoria: %s\n",tarefas[i].categoria);
+            fprintf(f,"Descricao: %s\n",tarefas[i].descricao);
+            fprintf(f,"Estado: %s\n",tarefas[i].estado);
+            fprintf(f,"\n");
+
+        }
+        fclose(f);
+    } while (i<valortarefa);
+}
+void exportarcategoria(EscritaTarefas *tarefas, int valortarefa){
+    FILE *f = fopen("tarefas_categoria.txt","w");
+    int i = -1;//inicializa o valor de i como -1 para que a primeira execucao se torne 0 e nao comprometa o resto da funcao
+    char filtro[100];
+    printf("digite qual a categoria para filtrar tarefas");
+    scanf("%s", filtro);
+    do{ //inicio do loop
+        i++; // incremento da variavel i (vira 0)
+        //printf("%d", tarefas[i].prioridade);
+        //printf("%d", filtro);
+        if(tarefas[i].prioridade < 0){ // se o valor for removido na funcao deletarTarefa, ele se torna 0 e essa a linha o ignora na listagem
+            continue;
+        }else if(strcmp(filtro, tarefas[i].categoria) == 0){ //caso contrario, ele lista todas as tarefas do programa
+            fprintf(f,"Tarefa %d:\n",i+1);
+            fprintf(f,"Prioridade: %d\n",tarefas[i].prioridade);
+            fprintf(f,"Categoria: %s\n",tarefas[i].categoria);
+            fprintf(f,"Descricao: %s\n",tarefas[i].descricao);
+            fprintf(f,"Estado: %s\n",tarefas[i].estado);
+            fprintf(f,"\n");
+
+        }
+        fclose(f);
+    } while (i<valortarefa);
+}
+void exportarprioridadecategoria(EscritaTarefas *tarefas, int valortarefa){
+    FILE *f = fopen("tarefas_categoriaprioridade.txt","w");
+    int i = -1;//inicializa o valor de i como -1 para que a primeira execucao se torne 0 e nao comprometa o resto da funcao
+    char filtro[100];
+    int filtro2;
+    printf("digite qual a categoria para filtrar tarefas");
+    scanf("%s", filtro);
+    printf("digite qual o valor da prioridade para filtrar tarefas");
+    scanf("%d", &filtro2);
+    do{ //inicio do loop
+        i++; // incremento da variavel i (vira 0)
+        //printf("%d", tarefas[i].prioridade);
+        //printf("%d", filtro);
+        if(tarefas[i].prioridade < 0){ // se o valor for removido na funcao deletarTarefa, ele se torna 0 e essa a linha o ignora na listagem
+            continue;
+        }else if(strcmp(filtro, tarefas[i].categoria) == 0 && tarefas[i].prioridade == filtro2){ //caso contrario, ele lista todas as tarefas do programa
+            fprintf(f,"Tarefa %d:\n",i+1);
+            fprintf(f,"Prioridade: %d\n",tarefas[i].prioridade);
+            fprintf(f,"Categoria: %s\n",tarefas[i].categoria);
+            fprintf(f,"Descricao: %s\n",tarefas[i].descricao);
+            fprintf(f,"Estado: %s\n",tarefas[i].estado);
+            fprintf(f,"\n");
+
+        }
+        fclose(f);
+    } while (i<valortarefa);
+}
+
 
 
 void escrita(EscritaTarefas *tarefas, int valortarefa){
